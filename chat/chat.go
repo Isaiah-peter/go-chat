@@ -65,7 +65,8 @@ func (c *Chat) Run() {
 func (c *Chat) add(user *User) {
 	if _, ok := c.users[user.UserName]; !ok {
 		c.users[user.UserName] = user
-		log.Printf("Added user: %s, Total: %d\n", user.UserName, len(c.users))
+		body := fmt.Sprintf("%s join the chat", user.UserName)
+		c.broadcast(NewMessage(body, "Server"))
 	}
 }
 
@@ -73,7 +74,8 @@ func (c *Chat) disconnect(user *User) {
 	if _, ok := c.users[user.UserName]; ok {
 		defer user.Conn.Close()
 		delete(c.users, user.UserName)
-		log.Printf("User left the chat: %s, Total: %d\n", user.UserName, len(c.users))
+		body := fmt.Sprintf("%s left the chat", user.UserName)
+		c.broadcast(NewMessage(body, "Server"))
 	}
 }
 

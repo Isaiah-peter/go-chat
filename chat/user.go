@@ -21,9 +21,9 @@ func (u *User) Read() {
 		} else {
 			u.Global.messages <- NewMessage(string(message), u.UserName)
 		}
-
-		u.Global.leave <- u
 	}
+
+	u.Global.leave <- u
 }
 
 func (u *User) Write(message *Message) {
